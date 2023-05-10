@@ -17,6 +17,7 @@ void BSTAndAVLMenu()
     {
     case 1:
         Student student;
+        student.create();
         algorithm->add(student);
         break;
     case 2:
@@ -53,6 +54,7 @@ void minAndMaxHeapMenu()
     {
     case 1:
         Student student;
+        student.create();
         algorithm->add(student);
         break;
     case 2:

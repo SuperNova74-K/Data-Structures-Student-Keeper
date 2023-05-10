@@ -11,8 +11,10 @@ private:
     string name;
     string depratment;
     double gpa;
+
 public:
-    Student()
+    Student(){};
+    void create()
     {
         cout << "Enter your id:";
         cin >> id;
@@ -22,11 +24,15 @@ public:
         cin >> department;
         cout << "Enter your gpa:";
         cin >> gpa;
-    };
+    }
     int getId()
     {
         return id;
-    };
+    }
+    double getGPA()
+    {
+        return gpa;
+    }
     void print()
     {
         cout << "Id: " << id << endl;
