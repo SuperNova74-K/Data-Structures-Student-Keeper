@@ -9,7 +9,7 @@ class Student
 private:
     int id;
     string name;
-    string depratment;
+    string department;
     double gpa;
 
 public:
@@ -39,7 +39,7 @@ public:
         cout << "Name: " << name << endl;
         cout << "Department: " << department << endl;
         cout << "GPA: " << gpa << endl;
-    };
-}
+    }
+};
 
 #endif

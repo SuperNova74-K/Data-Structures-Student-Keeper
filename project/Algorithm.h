@@ -8,10 +8,10 @@ using namespace std;
 class Algorithm
 {
 public:
-    void add(Student student){};
-    void remove(int id){};
-    void search(int id){};
-    void printAll(){};
-}
+    virtual void add(Student student){}
+    virtual void remove(int id){}
+    virtual void search(int id){}
+    virtual void printAll(){}
+};
 
 #endif

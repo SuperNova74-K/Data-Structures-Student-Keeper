@@ -1,6 +1,17 @@
-#include "algorithm.h"
+#include "Algorithm.h"
+#include "BST.h"
+#include "AVL.h"
+#include "MinHeap.h"
+#include "MaxHeap.h"
 
-Algorithm *algorithm;
+Algorithm *algorithm = new Algorithm();
+
+void addStudent()
+{
+    Student student;
+    student.create();
+    algorithm->add(student);
+}
 
 void BSTAndAVLMenu()
 {
@@ -16,9 +27,7 @@ void BSTAndAVLMenu()
     switch (choice)
     {
     case 1:
-        Student student;
-        student.create();
-        algorithm->add(student);
+        addStudent();
         break;
     case 2:
         int id;
@@ -53,9 +62,7 @@ void minAndMaxHeapMenu()
     switch (choice)
     {
     case 1:
-        Student student;
-        student.create();
-        algorithm->add(student);
+        addStudent();
         break;
     case 2:
         algorithm->printAll();
