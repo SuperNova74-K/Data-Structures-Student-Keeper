@@ -33,6 +33,10 @@ public:
     {
         return gpa;
     }
+    string getDepartment()
+    {
+        return department;
+    }
     void print()
     {
         cout << "Id: " << id << endl;

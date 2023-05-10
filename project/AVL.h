@@ -1,6 +1,7 @@
 #ifndef __AVL__
 #define __AVL__
 #include "algorithm.h"
+#include <map>
 using namespace std;
 
 class AVL : public Algorithm
@@ -210,7 +211,16 @@ private:
         return searchNode(node->left, id);
     }
 
+    void printDepartmentCount()
+    {
+        for (auto department : departmentCount)
+        {
+            cout << department.first << " => " << department.second << '\n';
+        }
+    }
+
     Node *root = NULL;
+    map<string, int> departmentCount;
 
 public:
     void add(Student student);
@@ -221,12 +231,15 @@ public:
 
 void AVL::add(Student student)
 {
+    departmentCount[student.getDepartment()]++;
     root = insert(root, student);
 }
 
 void AVL::printAll()
 {
     inorder(root);
+    cout << "##########################\n";
+    printDepartmentCount();
 }
 
 void AVL::remove(int id)
@@ -236,6 +249,7 @@ void AVL::remove(int id)
     {
         return;
     }
+    departmentCount[node->student.getDepartment()]--;
     root = deleteNode(root, node->student);
 }
 
