@@ -22,16 +22,23 @@ private:
         }
     };
 
+    int heightOf(Node *node)
+    {
+        if (node == NULL)
+            return 0;
+        return node->height;
+    }
+
     int balanceFactor(Node *node)
     {
         if (node == NULL)
             return 0;
-        return node->left->height - node->right->height;
+        return heightOf(node->left) - heightOf(node->right);
     }
 
     void updateHeight(Node *node)
     {
-        node->height = 1 + max(node->left->height, node->right->height);
+        node->height = 1 + max(heightOf(node->left), heightOf(node->right));
     }
 
     Node *rightRotate(Node *node)
@@ -59,34 +66,42 @@ private:
     Node *insert(Node *node, Student student)
     {
         if (node == NULL)
+        {
             return new Node(student);
+        }
 
         if (student.getId() < node->student.getId())
+        {
             node->left = insert(node->left, student);
+        }
         else if (student.getId() > node->student.getId())
+        {
             node->right = insert(node->right, student);
-        else // Duplicate keys not allowed
+        }
+        else
+        {
             return node;
+        }
         updateHeight(node);
         int bf = balanceFactor(node);
-
-        // Left-Left case
-        if (bf > 1 && student.getId() < node->left->student.getId())
+        // Left-Left rotation
+        if (bf > 1 && balanceFactor(node->left) >= 0)
+        {
             return rightRotate(node);
-
-        // Right-Right case
-        if (bf < -1 && student.getId() > node->right->student.getId())
+        }
+        // Right-Right rotation
+        if (bf < -1 && balanceFactor(node->right) <= 0)
+        {
             return leftRotate(node);
-
-        // Left-Right case
-        if (bf > 1 && student.getId() > node->left->student.getId())
+        }
+        // Left-Right rotation
+        if (bf > 1 && balanceFactor(node->left) < 0)
         {
             node->left = leftRotate(node->left);
             return rightRotate(node);
         }
-
-        // Right-Left case
-        if (bf < -1 && student.getId() < node->right->student.getId())
+        // Right-Left rotation
+        if (bf < -1 && balanceFactor(node->right) > 0)
         {
             node->right = rightRotate(node->right);
             return leftRotate(node);
@@ -95,19 +110,146 @@ private:
         return node;
     }
 
+    void inorder(Node *node)
+    {
+        if (node != NULL)
+        {
+            inorder(node->left);
+            node->student.print();
+            cout << "--------------------------\n";
+            inorder(node->right);
+        }
+    }
+
+    Node *getLowestSuccessor(Node *node)
+    {
+        Node *current = node;
+        while (current->left != NULL)
+            current = current->left;
+        return current;
+    }
+
+    Node *deleteNode(Node *node, Student student)
+    {
+        if (node == NULL)
+        {
+            return node;
+        }
+        if (student.getId() < node->student.getId())
+        {
+            node->left = deleteNode(node->left, student);
+        }
+        else if (student.getId() > node->student.getId())
+        {
+            node->right = deleteNode(node->right, student);
+        }
+        else
+        {
+            if ((node->left == NULL) || (node->right == NULL))
+            {
+                Node *childNode = node->left ? node->left : node->right;
+                if (childNode == NULL)
+                {
+                    childNode = node;
+                    node = NULL;
+                }
+                else
+                {
+                    *node = *childNode;
+                }
+                free(childNode);
+            }
+            else
+            {
+                Node *rightLowestSuccessor = getLowestSuccessor(node->right);
+                node->student = rightLowestSuccessor->student;
+                node->right = deleteNode(node->right, rightLowestSuccessor->student);
+            }
+        }
+        if (node == NULL)
+        {
+            return node;
+        }
+        updateHeight(node);
+        int bf = balanceFactor(node);
+        // Left-Left rotation
+        if (bf > 1 && balanceFactor(node->left) >= 0)
+        {
+            return rightRotate(node);
+        }
+        // Left-Right rotation
+        if (bf > 1 && balanceFactor(node->left) < 0)
+        {
+            node->left = leftRotate(node->left);
+            return rightRotate(node);
+        }
+        // Right-Right rotation
+        if (bf < -1 && balanceFactor(node->right) <= 0)
+        {
+            return leftRotate(node);
+        }
+        // Right-Left rotation
+        if (bf < -1 && balanceFactor(node->right) > 0)
+        {
+            node->right = rightRotate(node->right);
+            return leftRotate(node);
+        }
+        return node;
+    }
+
+    Node *searchNode(Node *node, int id)
+    {
+        if (node == NULL || node->student.getId() == id)
+        {
+            return node;
+        }
+        if (node->student.getId() < id)
+        {
+            return searchNode(node->right, id);
+        }
+        return searchNode(node->left, id);
+    }
+
     Node *root = NULL;
 
 public:
     void add(Student student);
-    void remove(int id){};
-    void search(int id){};
-    void printAll(){};
+    void remove(int id);
+    void search(int id);
+    void printAll();
 };
 
-void
-AVL::add(Student student)
+void AVL::add(Student student)
 {
-    insert(root, student);
+    root = insert(root, student);
+}
+
+void AVL::printAll()
+{
+    inorder(root);
+}
+
+void AVL::remove(int id)
+{
+    Node *node = searchNode(root, id);
+    if (node == NULL)
+    {
+        return;
+    }
+    root = deleteNode(root, node->student);
+}
+
+void AVL::search(int id)
+{
+    Node *node = searchNode(root, id);
+    if (node == NULL)
+    {
+        cout << "Student not found\n";
+    }
+    else
+    {
+        node->student.print();
+    }
 }
 
 #endif

@@ -46,6 +46,9 @@ void BSTAndAVLMenu()
     case 5:
         return;
         break;
+    default:
+        cout << "Invalid choice\n";
+        break;
     }
     BSTAndAVLMenu();
 }
@@ -54,8 +57,8 @@ void minAndMaxHeapMenu()
 {
     cout << "What do you want to do?\n";
     cout << "1- Add student\n";
-    cout << "4- Print all students\n";
-    cout << "5- Return to main menu\n";
+    cout << "2- Print all students\n";
+    cout << "3- Return to main menu\n";
     int choice;
     cout << "Enter your choice: ";
     cin >> choice;
@@ -69,6 +72,9 @@ void minAndMaxHeapMenu()
         break;
     case 3:
         return;
+        break;
+    default:
+        cout << "Invalid choice\n";
         break;
     }
     minAndMaxHeapMenu();
@@ -106,7 +112,11 @@ void printAlgoirthmsMenu()
     case 5:
         return;
         break;
+    default:
+        cout << "Invalid choice\n";
+        break;
     }
+    printAlgoirthmsMenu();
 }
 
 int main()
