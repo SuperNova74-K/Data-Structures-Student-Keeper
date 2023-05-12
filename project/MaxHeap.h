@@ -21,12 +21,12 @@ private:
             largest = right;
         if (largest != i)
         {
-            swap(reinterpret_cast<int &>(students[i]), reinterpret_cast<int &>(students[largest]));
+            swap(students[i], students[largest]);
             heapify(largest);
         }
     };
-    void swap(int& a, int& b){
-        int temp = a;
+    void swap(Student a, Student b){
+        Student temp = a;
         a = b;
         b = temp;
     };
@@ -55,8 +55,7 @@ public:
         // Move the added student up the heap to maintain the Max Heap property
         while (currentIndex > 0 && students[currentIndex].getId() > students[(currentIndex - 1) / 2].getId())
         {
-            swap(reinterpret_cast<int &>(students[currentIndex]),
-                 reinterpret_cast<int &>(students[(currentIndex - 1) / 2]));
+            swap(students[currentIndex], students[(currentIndex - 1) / 2]);
             currentIndex = (currentIndex - 1) / 2;
         }
     };
@@ -97,8 +96,7 @@ public:
 
     };
     void printAll(){
-        for (int i = 0; i < currentSize; i++)
-        {
+        for (int i = 0; i < currentSize; i++){
             std::cout << "Student " << i + 1 << ":\n";
             students[i].print();
         }
