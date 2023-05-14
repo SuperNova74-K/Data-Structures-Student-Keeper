@@ -1,5 +1,7 @@
 #ifndef __BST__
 #define __BST__
+
+#include <unordered_map>
 #include "Algorithm.h"
 #include "stack"
 using namespace std;
@@ -107,7 +109,7 @@ public:
     };
 
     void remove(int id){
-        remove(id, root);
+        root = remove(id, root);
     }
 
     void search(int id){
@@ -137,6 +139,7 @@ public:
             return;
 
         stack<Node *>stk;
+        unordered_map<string, int> departments;
 
         while(not stk.empty() or head){
             if(head){
@@ -144,11 +147,21 @@ public:
                 head = head->left;
             }else{
                 stk.top()->value.print();
+                departments[stk.top()->value.getDepartment()]++;
+                cout << endl;
+                cout << "_______________________";
                 cout << endl;
                 head = stk.top()->right;
                 stk.pop();
             }
         }
+
+        cout << "Department Name   ->  Number Of Students" << endl;
+        for(auto & department : departments){
+            cout << department.first << " -> " << department.second << endl;
+        }
+
+        cout << endl << "_______________________" << endl;
 
     }
 
