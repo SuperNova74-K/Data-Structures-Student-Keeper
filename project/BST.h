@@ -2,6 +2,7 @@
 #define __BST__
 
 #include <unordered_map>
+#include <map>
 #include "Algorithm.h"
 #include "stack"
 using namespace std;
@@ -27,6 +28,7 @@ private:
     };
 
     Node * root = nullptr;
+    map<string, int> departments;
 
     /**
      * @param head: the root of the sub-tree you want to get the minimum of
@@ -51,6 +53,7 @@ private:
         }else if(id > head->value.getId()){
             head->right = remove(id, head->right);
         }else{ // we have reached the node we want to remove
+            departments[head->value.getDepartment()]--;
 
             Node* originalPlaceOfHead = head; // keeping the place of head, so we can later delete it if needed
 
@@ -83,7 +86,9 @@ public:
      */
     void add(Student student) override{
         Node * head = root;
+
         if(not root){
+            departments[student.getDepartment()]++;
             root = new Node(student);
             return;
         }
@@ -94,7 +99,7 @@ public:
                     head = head->left;
                 else{
                     head->left = new Node(student);
-                    return;
+                    break;
                 }
 
             }else if(student.getId() > head->value.getId()){
@@ -102,10 +107,14 @@ public:
                     head = head->right;
                 else{
                     head->right = new Node(student);
-                    return;
+                    break;
                 }
+            }else{
+                cout << "A Student with that ID Already Exists" << endl;
+                return;
             }
         }
+        departments[student.getDepartment()]++;
     };
 
     void remove(int id){
@@ -139,7 +148,7 @@ public:
             return;
 
         stack<Node *>stk;
-        unordered_map<string, int> departments;
+
 
         while(not stk.empty() or head){
             if(head){
@@ -147,7 +156,6 @@ public:
                 head = head->left;
             }else{
                 stk.top()->value.print();
-                departments[stk.top()->value.getDepartment()]++;
                 cout << endl;
                 cout << "_______________________";
                 cout << endl;
