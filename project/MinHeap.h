@@ -16,10 +16,10 @@ private:
         int left = 2 * i + 1;
         int right = 2 * i + 2;
 
-        if (left < currentSize && students[left].getId() < students[smallest].getId())
+    if (left < currentSize && students[left].getGPA() < students[smallest].getGPA())
             smallest = left;
 
-        if (right < currentSize && students[right].getId() < students[smallest].getId())
+        if (right < currentSize && students[right].getGPA() < students[smallest].getGPA())
             smallest = right;
 
         if (smallest != i)
@@ -28,11 +28,11 @@ private:
             heapify(smallest);
         }
     };
-    void swap(Student a, Student b){
-        Student temp = a;
-        a = b;
-        b = temp;
-    };
+//    void swap(Student a, Student b){
+//        Student temp = a;
+//        a = b;
+//        b = temp;
+//    };
 
 public:
     MinHeap(){
@@ -55,7 +55,7 @@ public:
         currentSize++;
 
         // Move the added student up the heap to maintain the Min Heap property
-        while (currentIndex > 0 && students[currentIndex].getId() < students[(currentIndex - 1) / 2].getId()){
+        while (currentIndex > 0 && students[currentIndex].getGPA() < students[(currentIndex - 1) / 2].getGPA()){
             swap(students[currentIndex], students[(currentIndex - 1) / 2]);
             currentIndex = (currentIndex - 1) / 2;
         }
@@ -92,9 +92,12 @@ public:
         }
     };
     void printAll(){
-        for (int i = 0; i < currentSize; i++){
-            std::cout << "Student " << i + 1 << ":\n";
-            students[i].print();
+        while (currentSize > 0)
+        {
+            students[0].print();
+            swap(students[0], students[currentSize - 1]);
+            currentSize--;
+            heapify(0);
         }
     };
 };
